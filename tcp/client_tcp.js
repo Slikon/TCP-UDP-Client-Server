@@ -1,12 +1,24 @@
 const net = require('net');
+const random = require('random-bigint');
 
 const ADDRESS = 'localhost';
 const PORT = 2000;
 
+//Generating long ints for future transfer to server
+const longNumsGenerate = () => {
+  let longNums = [];
+  for (let i = 0; i < 2; i++) {
+    longNums.push(random(128));
+  }
+
+  return longNums;
+};
+
+//creating socket for communication with server
 const socket = new net.Socket();
 
 const send = (message) => {
-  console.log('Client >', message);
+  console.log('Client > ', message);
   socket.write(message);
 };
 
@@ -27,9 +39,11 @@ socket.on('error', (err) => {
 });
 
 socket.on('connect', () => {
-  send('CLI DATA');
-  send('CLI DATA');
-  send('CLI DATA');
+  socket.setNoDelay(true); //disabling Nagle's algorithm - packets of data will be sent immediately without delays
+
+  longNumsGenerate().forEach((element) => {
+    send(element.toString());
+  });
 });
 
 socket.connect({

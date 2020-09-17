@@ -14,10 +14,14 @@ const connection = (socket) => {
     bufferSize: socket.bufferSize,
   });
 
-  socket.write(`Welcome, client #${socket.localPort}`);
+  socket.write(`Welcome, client #${socket.remotePort}`);
 
   socket.on('data', (data) => {
-    console.log('RECIEVED Data:', data.toString());
+    if (BigInt(data)) {
+      console.log(BigInt(data));
+    } else {
+      console.log('Recieved NON BIGINT \n' + data);
+    }
   });
 
   socket.on('end', () => {

@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "run-s tcp udp",
     "tcp": "run-s tab:server_tcp tab:client_tcp",
     "tab:server_tcp": "ttab -t 'Server TCP' node tcp/server_tcp.js",
     "tab:client_tcp": "ttab -t 'Client TCP' node tcp/client_tcp.js",
